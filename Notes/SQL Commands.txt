@@ -1,0 +1,13 @@
+CREATE DATABASE 'brain_hunt';
+
+CREATE TABLE IF NOT EXISTS `user_auth` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+
+INSERT INTO `user_auth` (`ID`, `username`, `name`, `password`) VALUES
+(1, 'test1', 'test user 1', '5a105e8b9d40e1329780d62ea2265d8a');
