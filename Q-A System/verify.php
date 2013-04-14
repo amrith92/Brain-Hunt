@@ -1,0 +1,119 @@
+<?php
+	require_once ( '../common/include_home.php' );
+?>
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+	<meta charset="utf-8">
+	<title>Brain Hunt | Register | InFOSSphere | VITC</title>
+	<link rel="stylesheet" href="css/normalize.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+<body>
+	<div class="container white rounded padded">
+		<div class="row">
+			<div class="span12">
+				<h1>Verification Report</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<hr />
+<?php
+
+if ( isset ($_GET['email']) ) {
+
+	require_once ( "../common/include_database.php" );
+
+	$query = "SELECT * FROM user_data WHERE `ID`=:id;";
+	$stmt = $dbh->prepare ( $query );
+	$id = stripslashes ( htmlspecialchars ( $_GET['ID'], ENT_QUOTES, 'UTF-8' ) );
+	$stmt->bindParam ( ":id", $id );
+	$stmt->execute ( );
+	$result = $stmt->fetch ( );
+	
+	//var_dump ( $result );
+	
+	if ( $result['email1'] == $_GET['email'] )
+	{
+		if ( $result['code1'] == $_GET['code'] )
+		{
+			$query = "UPDATE user_data SET `verified1`='1' WHERE `ID`=:id;";
+			$stmt = $dbh->prepare ( $query );
+			$id = stripslashes ( htmlspecialchars ( $_GET['ID'], ENT_QUOTES, 'UTF-8' ) );
+			$stmt->bindParam ( ":id", $id );
+			$stmt->execute ( );
+			
+			if ( $result['verified2'] == '1' )
+			{
+				$query = "UPDATE user_auth SET `verified`='1' WHERE `ID`=:id;";
+				$stmt = $dbh->prepare ( $query );
+				$id = stripslashes ( htmlspecialchars ( $_GET['ID'], ENT_QUOTES, 'UTF-8' ) );
+				$stmt->bindParam ( ":id", $id );
+				$stmt->execute ( );
+				
+				$query = "INSERT INTO `user_state` VALUES ( :id, '0', '0' );";
+				$stmt = $dbh->prepare ( $query );
+				$stmt->bindParam ( ":id", $id );
+				$stmt->execute ( );
+			}
+			
+			echo "<h3>Verification Successful!</h3>";
+		}
+		else
+		{
+			echo "<h3>Verification Failed!</h3>";
+		}
+	}
+	else if ( $result['email2'] == $_GET['email'] )
+	{
+		if ( $result['code2'] == $_GET['code'] )
+		{
+			$query = "UPDATE user_data SET `verified2`='1' WHERE `ID`=:id;";
+			$stmt = $dbh->prepare ( $query );
+			$id = stripslashes ( htmlspecialchars ( $_GET['ID'], ENT_QUOTES, 'UTF-8' ) );
+			$stmt->bindParam ( ":id", $id );
+			$stmt->execute ( );
+			
+			if ( $result['verified1'] == '1' )
+			{
+				$query = "UPDATE user_auth SET `verified`='1' WHERE `ID`=:id;";
+				$stmt = $dbh->prepare ( $query );
+				$id = stripslashes ( htmlspecialchars ( $_GET['ID'], ENT_QUOTES, 'UTF-8' ) );
+				$stmt->bindParam ( ":id", $id );
+				$stmt->execute ( );
+				
+				$query = "INSERT INTO `user_state` VALUES ( :id, '0', '0' );";
+				$stmt = $dbh->prepare ( $query );
+				$stmt->bindParam ( ":id", $id );
+				$stmt->execute ( );
+			}
+			
+			echo "<h3>Verification Successful!</h3>";
+		}
+		else
+		{
+			echo "<h3>Verification Failed!</h3>";
+		}
+	}
+	else
+	{
+		echo "<h3>Invalid Request!</h3>";
+	}
+
+} else {
+	echo "Looks like you're lost! Let's take you back. Click on Home below.";
+}
+
+?>
+			<hr />
+			<div class="centered">
+				<a href="<?php echo $HOME; ?>">&bull;<br />Home</a>
+			</div>
+		</div>
+	</div>
+	<script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

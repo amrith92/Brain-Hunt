@@ -1,0 +1,102 @@
+/* Put your CSS here */
+html, body {
+	margin: 20px;
+}
+
+body {
+	background: #e7e1e8;
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNlN2UxZTgiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZDJlYmY5IiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-radial-gradient(center, ellipse cover,  #e7e1e8 0%, #d2ebf9 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#e7e1e8), color-stop(100%,#d2ebf9));
+	background: -webkit-radial-gradient(center, ellipse cover,  #e7e1e8 0%,#d2ebf9 100%);
+	background: -o-radial-gradient(center, ellipse cover,  #e7e1e8 0%,#d2ebf9 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  #e7e1e8 0%,#d2ebf9 100%);
+	background: radial-gradient(ellipse at center,  #e7e1e8 0%,#d2ebf9 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e7e1e8', endColorstr='#d2ebf9',GradientType=1 );
+}
+
+.centered {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.hint {
+	margin: 6px auto;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding: 6px;
+	background: #ff7400;
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmZjc0MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmY3NDAwIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: -moz-radial-gradient(center, ellipse cover,  #ff7400 0%, #ff7400 100%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#ff7400), color-stop(100%,#ff7400));
+	background: -webkit-radial-gradient(center, ellipse cover,  #ff7400 0%,#ff7400 100%);
+	background: -o-radial-gradient(center, ellipse cover,  #ff7400 0%,#ff7400 100%);
+	background: -ms-radial-gradient(center, ellipse cover,  #ff7400 0%,#ff7400 100%);
+	background: radial-gradient(ellipse at center,  #ff7400 0%,#ff7400 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff7400', endColorstr='#ff7400',GradientType=1 );
+}
+
+#loc-txt {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	margin: 6px;
+	padding: 6px;
+	background-color: rgba(140, 190, 240, 0.8);
+}
+
+.big {
+	font-size: 3em;
+}
+
+.biggish {
+	font-size: 1.2em;
+}
+
+.white {
+	background-color: #fff;
+}
+
+.rounded {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.padded {
+	padding: 12px;
+}
+
+img.small {
+	width: 10%;
+}
+
+#loc-history {
+	max-height: 150px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	font-size: 0.688em;
+}
+
+#loc-history span {
+	margin: 6px;
+	clear:both;
+}
+
+#loc-history span span {
+	clear: both;
+}
+
+.score {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	margin: 6px;
+	padding: 40px;
+	background-color: rgba(14, 180, 0, 0.8);
+}

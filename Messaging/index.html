@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrainHunt Messaging System</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+
+  <script type="text/x-handlebars">
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="#">MessageHQ</a>
+				<ul class="nav">
+					<li>{{#linkTo "dash"}}Dash{{/linkTo}}</li>
+				</ul>
+			</div>
+		</div>
+    {{outlet}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="index">
+		<h2>Welcome to Messaging-HQ.</h2>
+		<div class="about">
+			<p>
+				Har-Har! Welcome to the tavern! Drink, make small-talk, and
+				obtain the info that you seek here.
+			</p>
+		</div>
+  </script>
+
+	<script type="text/x-handlebars" data-template-name="popup">
+		<div class="popup">
+			<button class="popup-dismiss">x</button>
+			<div class="popup-content">
+				{{yield}}
+			</div>
+		</div>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="dash" id="dash">
+		<h2>&laquo; Ouestion &raquo;</h2>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span3">
+					<table class="table">
+						<thead>
+								<tr>
+									<th>Helpdesk</th>
+								</tr>
+						</thead>
+						{{#each model}}
+						<tr>
+							<td>
+								{{#linkTo "description" this}}The Problem <span class="muted">- description of the question</span>{{/linkTo}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								{{#linkTo "hints" this}}Hints <span class="muted">- take it or leave it ;)</span>{{/linkTo}}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								{{#linkTo "threads"}}Discussion <span class="muted">- questions?</span>{{/linkTo}}
+							</td>
+						</tr>
+						{{/each}}
+					</table>
+				</div>
+				<div class="span9">
+					{{outlet}}
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="description" id="description">
+		<h1>{{title}}</h1>
+
+		<hr />
+
+		<p>
+			{{markdown description}}
+		</p>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="hints" id="hints">
+		<h1>{{title}} &raquo; Hints</h1>
+
+		<hr />
+
+		<p>
+			{{markdown hints}}
+		</p>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="threads">
+		<h1>{{title}} &raquo; Discuss</h1>
+
+		<hr />
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<td>Discussion Threads</td>
+					<td>Asked When?</td>
+				</tr>
+			</thead>
+			{{#each m in model }}
+			<tr>
+				<td>{{#linkTo threads.thread m}}{{m.title}}{{/linkTo}}</td>
+				<td>{{date m.timestamp}}</td>
+			</tr>
+			{{/each}}
+		</table>
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="thread">
+		{{#view App.ThreadsLayoutView }}
+		<div class="thread-post">
+			<h1>[?] {{title}}</h1>
+			<hr />
+			<div class="intro">
+				{{text}}
+			</div>
+		</div>
+		{{/view}}
+	</script>
+
+	<script type="text/x-handlebars" data-template-name="threadslayout">
+		<h2>&laquo; Ouestion &raquo;</h2>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span3">
+					<table class="table">
+						<thead>
+								<tr>
+									<th>Helpdesk &raquo; Discuss</th>
+								</tr>
+						</thead>
+						<tr>
+							<td>{{#linkTo "threads"}}&larr; Back to Discussion{{/linkTo}}</td>
+						</tr>
+					</table>
+				</div>
+				<div class="span9">
+					{{ yield }}
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<!-- TESTING ONLY -->
+	<script type="text/javascript">
+		//<!--
+		window.onload = function() {
+			CookieManager.setItem('__cq', '1');
+		};
+		//-->
+	</script>
+	<!-- END (TESTING ONLY) -->
+
+  <script src="js/libs/jquery-1.9.1.js"></script>
+  <script src="js/libs/handlebars-1.0.0-rc.3.js"></script>
+  <script src="js/libs/ember-1.0.0-rc.2.js"></script>
+	<script src="js/ember-data.prod.js"></script>
+	<script src="js/libs/showdown.js"></script>
+	<script src="js/libs/moment.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/libs/cookiemanager.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

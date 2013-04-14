@@ -1,0 +1,1 @@
+Number is less than 7

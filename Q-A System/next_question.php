@@ -1,0 +1,148 @@
+<?php
+
+require_once('../common/include_session.php');
+
+require_once ( '../common/include_validate login.php' );
+
+?>
+
+<?php
+
+require_once ( 'pendingQuestion.php' );
+
+function next_question ( )
+{
+	global $dbh;
+	global $_SESSION;
+	
+	$qn = pendingQuestion ( );
+	
+	if ( $qn >= 0 )
+	{
+		$qn = stripslashes ( htmlspecialchars ( $qn, ENT_QUOTES, 'UTF-8' ) );
+		
+		$query = "SELECT * FROM `questions` WHERE ID=:question;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->bindParam ( ":question", $qn );
+		$stmt->execute ( );
+	
+		$result = $stmt->fetch ( );
+		
+		$question['ID'] = $result['ID'];
+		$question['location'] = $result['location'];
+		
+		return $question;
+	}
+	else
+	{	
+		$id = stripslashes ( htmlspecialchars ( $_SESSION['id'], ENT_QUOTES, 'UTF-8' ) );
+		
+		$query = "SELECT `level` FROM `user_state` WHERE `user_ID`=:id;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->bindParam ( ":id", $id );
+		$stmt->execute ( );
+		
+		$level = $stmt->fetch ( );
+		$level = $level[0];
+		
+		$query = "SELECT MAX(`level`) FROM `questions`;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->execute ( );
+		
+		$maxLevel = $stmt->fetch ( );
+		$maxLevel = $maxLevel[0];
+		
+		if ( $level > $maxLevel )
+			return -2;
+		
+		$query = "SELECT MAX(`ID`), MIN(`ID`) FROM `questions`;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->execute ( );
+	
+		$result = $stmt->fetch ( );
+		$max = $result[0];
+		$min = $result[1];
+		
+	
+		$query = "SELECT `question_ID` FROM `results` WHERE `user_ID`=:id AND `time_success` IS NOT NULL;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->bindParam ( ":id", $id );
+		$stmt->execute ( );
+	
+		$completed = $stmt->fetchAll ( );
+	
+		/*
+			Checking if the guy has atempted all questions,
+			if so, he/she cannot proceed
+		*/
+		$query = "SELECT COUNT(*) FROM `questions` WHERE `level`<=:level;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->bindParam ( ":level", $level );
+		$stmt->execute ( );
+	
+		$noQuestions = $stmt->fetch ( );
+		
+		if ( count ( $completed ) == $noQuestions[0] )
+		{
+			return -1;
+		} 
+		/**/
+		$query = "SELECT `ID` FROM `questions` WHERE `level`=:level;";
+		$stmt = $dbh->prepare ( $query );
+		$stmt->bindParam ( ":level", $level );
+		$stmt->execute ( );
+	
+		$questionIDs = $stmt->fetchAll ( );
+
+		while ( 1 )
+		{
+			$randomNumber = mt_rand ( $min, $max );
+		
+			/*
+				Checking if the guy has attempted it
+			*/
+			$flag = false;
+			
+			if ( $completed )
+			{
+				foreach ( $completed as $ques )
+				{
+					if ( $ques['question_ID'] == $randomNumber )
+					{
+						$flag = true;
+						break;
+					}
+				}
+			}
+		
+			if ( $flag == true ) continue;
+			/**/
+		
+			/*
+				Checking if a question with ID as randomNumber exists ( in the current level )
+			*/
+			$flag = false;
+			foreach ( $questionIDs as $val )
+			{
+				if ( $val['ID'] == $randomNumber )
+				{
+					$flag = true;
+					break;
+				}
+			}
+			if ( !$flag) continue;
+			/**/
+		
+			$query = "SELECT * FROM `questions` WHERE `ID`=:randomNumber;";
+			$stmt = $dbh->prepare ( $query );
+			$stmt->bindParam ( ":randomNumber", $randomNumber );
+			$stmt->execute ( );
+	
+			$question = $stmt->fetch ( );
+			
+			return $question;
+		}
+	}
+}
+
+?>

@@ -1,0 +1,16 @@
+<?php
+
+require_once('../common/include_session.php');
+
+require_once ( '../common/include_validate login.php' );
+
+session_destroy();
+
+require_once('../common/include_home.php');
+
+setcookie ("__idx", "", time() - 3600);
+setcookie ("__llist", "", time() - 3600);
+setcookie ("__lvl", "", time() - 3600);
+
+header("Location: " . $HOME);
+exit();
