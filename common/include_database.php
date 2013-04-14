@@ -2,9 +2,9 @@
 
 $hostname = "localhost";
 
-$username = "brain_hunt";
+$username = "root";
 
-$password = "63qRQJveVnwYKqeB";
+$password = "25AMjaN92";
 
 $db = "brain_hunt";
 

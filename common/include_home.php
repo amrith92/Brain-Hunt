@@ -1,5 +1,5 @@
 <?php
 
-$HOME = "http://localhost/Brain-Hunt";
+$HOME = "http://thegeekmachine.co/Brain-Hunt";
 
 ?>

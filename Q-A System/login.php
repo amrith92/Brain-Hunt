@@ -1,5 +1,7 @@
 <?php
 
+require_once('../common/include_session.php');
+
 if ( ! isset ( $_SESSION['logged-in'] ) )
 {
 	if ( isset ( $_POST['username'] ) )
@@ -8,77 +10,230 @@ if ( ! isset ( $_SESSION['logged-in'] ) )
 	
 		$query = "SELECT * FROM user_auth WHERE username=:username;";
 		$stmt = $dbh->prepare ( $query );
-		$stmt->bindParam ( ":username", $_POST['username'] );
+		$username = stripslashes ( htmlspecialchars ( $_POST['username'], ENT_QUOTES, 'UTF-8' ) );
+		$stmt->bindParam ( ":username", $username );
 		$stmt->execute ( );
 		$result = $stmt->fetchAll ( );
-	
-		$flag = false;
-		foreach($result as $row)
-		{
-			if ( $row['password'] == md5 ( $_POST['password'] ) )
-			{
-				$flag = true;
-			
-				require_once('../common/include_session.php');
-			
-				$_SESSION['logged-in'] = true;
-				$_SESSION['id'] = $row['ID'];
-				$_SESSION['name'] = $row['name'];
-			
-				header('Location: profile.php');
-
-				exit;
-			
-			}		
-		}
 		
-		if ( $flag == false )
+		if ( $result[0]['verified'] == 0 )
 		{
 			require_once ( "../common/include_home.php" );
-			header ( "Location: $HOME/Q-A System/login.php?error=1" );
+			header ( "Location: $HOME/Q-A System/login.php?error=3" );
+			exit();
+		}
+		else
+		{	
+			$flag = false;
+			foreach($result as $row)
+			{
+				if ( $row['password'] == md5 ( $_POST['password'] ) )
+				{
+					$flag = true;
+			
+					$_SESSION['logged-in'] = true;
+					$_SESSION['id'] = $row['ID'];
+					$_SESSION['name'] = $row['username'];
+			
+					if ( $_SESSION['id'] < 0 )
+					{
+						header ( 'Location: question_upload.php' );
+						exit ( );
+					}
+					else
+					{
+						header('Location: question.php');
+						exit ( );
+					}			
+				}
+			}
+		
+			if ( $flag == false )
+			{
+				require_once ( "../common/include_home.php" );
+				header ( "Location: $HOME/Q-A System/login.php?error=1" );
+				exit();
+			}
 		}
 	}
 }
 else
 {
 	header('Location: profile.php');
+	exit();
 }
 
 ?>
 
 <!DOCTYPE html>
-
 <html>
 
 <head>
-	<title>Welcome</title>
+	<meta charset="utf-8" />
+	<title>GLUG: BRAIN-HUNT | Welcome</title>
+	<link rel="stylesheet" href="css/normalize.css" type="text/css" />
+	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+	<style type="text/css">
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: url('img/bg.jpg') no-repeat center center fixed;
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.form-signin {
+  max-width: 300px;
+  padding: 19px 29px 29px;
+  margin: 0 20px 20px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+  font-size: 16px;
+  height: auto;
+  margin-bottom: 15px;
+  padding: 7px 9px;
+}
+
+#overlay {
+	position: fixed;
+	top:0;
+	left: 0;
+	z-index: 400;
+	background-color: rgba(10, 10, 10, 0.8);
+	width: 100%;
+	height: 100%;
+	display: none;
+}
+
+#popup {
+	text-align: center;
+	width: 50%;
+	margin: 100px auto;
+	padding: 6px;
+	background-color: #fff;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	box-shadow: 0 0 4px #000;
+	-moz-box-shadow: 0 0 4px #000;
+	-webkit-box-shadow: 0 0 4px #000;
+	z-index: 9999;
+}
+
+#popup-content {
+	text-align: left;
+	padding: 20px;
+}
+.centered {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.block-right {
+	display: inline-block;
+	float: right;
+}
+
+.right {
+	text-align: right;
+}
+	</style>
+	<script type="text/javascript">
+//<!--
+	function closePopup() {
+		var e = document.getElementById('overlay');
+		e.style.display = "none";
+		document.input.submit();
+	}
+//-->
+	</script>
 </head>
 
 <body>
-
-	<form method="post" action="login.php">
+<div id="overlay">
+	<div id="popup">
+		<div id="popup-content" class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<h3 style="display: inline-block;">IMPORTANT INFO TO HELP YOU THROUGH</h3>
+				</div>
+			</div>
+			<hr />
+			<!-- HTML here -->
+			<div class="row-fluid">
+				<div class="span12">
+					<ul>
+						<li>Each question weighs 40 points if answered within 15 minutes.</li>
+						<li>After 15 minutes, an option to view the hint would be available.</li>
+						<li>Regardless of whether you view the hint or not, the points would be reduced by half, after the hint is available!</li>
+					</ul>
+				</div>
+			</div>
+			<hr />
+			<div class="row-fluid">
+				<div class="span12 centered">
+					<a href="javascript:closePopup();">Continue &rarr;</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="container-fluid">
+		<form class="form-signin" action="login.php" method="POST" name="input">
+      <h2 class="form-signin-heading">Brain Hunt - inFOSSphere</h2>
+      <input type="text" class="input-block-level" placeholder="Username" name="username">
+      <input type="password" class="input-block-level" placeholder="Password" name="password">
+      <div class="btn btn-large btn-primary" onclick="javascript:Rules();">Sign in</div>
+			<?php
+					if ( isset ( $_GET['error'] ) )
+					{
+						if ( $_GET['error'] == "1" )
+							echo "<br><span style=\"color: red\">Incorrect Credentials!</span>";
+						else if ( $_GET['error'] == "2" )
+							echo "<br><span style=\"color: red\">Login to View that Page!</span>";
+						else if ( $_GET['error'] == "3" )
+											echo "<br><span style=\"color: red\">This Team's Member(s) are yet to verify their emails!!</span>";
+					}
+				?>
+			<hr />
+			<div class="white">
+				<h5>Registered?</h5>
+				<p>
+					Please click on sign-up to register for this event.
+				</p>
+				<div class="right">
+					<a href="signup.html.php">Sign-Up &raquo;</a>
+				</div>
+			</div>
+    </form>
+		
+	</div>
 	
-		<label for="username">Username : </label>
-		<input id="username" name="username">
-		<br>
+	<script src="js/showdown.js"></script>
+	<script src="js/moment.js"></script>
+	<script src="js/cookiemanager.js"></script>
 	
-		<label for="password">Password : </label>
-		<input type="password" id="password" name="password">
-		<br>
-	
-		<input type="submit" value="Login">
-		<?php
-			if ( isset ( $_GET['error'] ) )
-			{
-				if ( $_GET['error'] == "1" )
-					echo "<br><span style=\"color: red\">Incorrect Credentials!</span>";
-				else if ( $_GET['error'] == "2" )
-					echo "<br><span style=\"color: red\">Login to View that Page!</span>";
-			}
-		?>
-	
-	</form>
+	<script>
+	function Rules ()
+	{
+		var e = document.getElementById('overlay');
+		e.style.display = "block";
+	}
+	</script>
 	
 </body>
-
 </html>
