@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+	<title>Add Commentary</title>
+</head>
+<body>
+	<form action="?" method="POST">
+		<label for="ventid">Commentary</label>
+		<textarea id="ventid" name="myvent"></textarea><br />
+		<button class="btn">Add &raquo;</button>
+	</form>
+</body>
+</html>
