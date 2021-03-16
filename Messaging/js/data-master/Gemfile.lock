@@ -53,8 +53,8 @@ GEM
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     posix-spawn (0.3.6)
+    rack (2.2.3)
     racc (1.5.2)
-    rack (1.5.2)
     rake (10.0.3)
     rake-pipeline-web-filters (0.7.0)
       rack
