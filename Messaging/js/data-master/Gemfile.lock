@@ -47,14 +47,14 @@ GEM
       listen
     listen (0.7.3)
     mime-types (1.21)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.8.0)
     multi_json (1.7.0)
-    nokogiri (1.11.2)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.13.3)
+      mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     posix-spawn (0.3.6)
+    racc (1.6.0)
     rack (2.2.3)
-    racc (1.5.2)
     rake (10.0.3)
     rake-pipeline-web-filters (0.7.0)
       rack
