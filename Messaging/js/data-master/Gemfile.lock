@@ -49,7 +49,7 @@ GEM
     mime-types (1.21)
     mini_portile2 (2.8.0)
     multi_json (1.7.0)
-    nokogiri (1.13.3)
+    nokogiri (1.13.4)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     posix-spawn (0.3.6)
